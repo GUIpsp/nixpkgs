@@ -72,7 +72,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "webkitgtk";
-  version = "2.44.3";
+  version = "2.45.91";
   name = "${finalAttrs.pname}-${finalAttrs.version}+abi=${if lib.versionAtLeast gtk3.version "4.0" then "6.0" else "4.${if lib.versions.major libsoup.version == "2" then "0" else "1"}"}";
 
   outputs = [ "out" "dev" "devdoc" ];
@@ -83,7 +83,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   src = fetchurl {
     url = "https://webkitgtk.org/releases/webkitgtk-${finalAttrs.version}.tar.xz";
-    hash = "sha256-3ILQQuysqYGkhSNXwG5SNXQzGc8QqUzTatQbl4g6C1Q=";
+    hash = "sha256-xtxXyKRrQetD55EipmqedsRNdMQBnWZO20UBU+XMfWg=";
   };
 
   patches = lib.optionals stdenv.isLinux [
@@ -195,6 +195,7 @@ stdenv.mkDerivation (finalAttrs: {
     "-DUSE_SOUP2=${cmakeBool (lib.versions.major libsoup.version == "2")}"
     "-DUSE_LIBSECRET=${cmakeBool withLibsecret}"
     "-DENABLE_EXPERIMENTAL_FEATURES=${cmakeBool enableExperimental}"
+    "-DUSE_SYSTEM_SYSPROF_CAPTURE=OFF"
   ] ++ lib.optionals stdenv.isLinux [
     # Have to be explicitly specified when cross.
     # https://github.com/WebKit/WebKit/commit/a84036c6d1d66d723f217a4c29eee76f2039a353
